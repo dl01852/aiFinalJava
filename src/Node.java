@@ -13,8 +13,6 @@ public class Node {
     private Node parent;
     private int[] board;
     private int[] goal_state;
-    private int[] flat_goal_state;
-    private HashMap<String,int[]> hashGoal;
 
     public Node(int[] board, int[] goal_state, Node parent)
     {
@@ -61,12 +59,16 @@ public class Node {
            int currentPosition = -1;
            for(int j = 0; j < board.length; j++)
            {
-               if(board[j] == goalValue) { // search the board looking for the value.
+               if(board[j] == goalValue) { // search the board looking for the value(goal value).
                    currentPosition = j;
                    break;
                }
 
            }
+           // given an x by x board in the form of a flat array(1D array),
+           // we can emulate the 2D version of the board using 1 loop.
+           // for any x by x board, dividing by x gives you the row and modulo x gives you the column.
+           // below i'm grabbing the row/col for each the goalBoard and the currentBoard. Then i calculate the distance between the 2.
            int currentRow = currentPosition / 3;
            int currentCol = currentPosition % 3;
            int goalRow = goalPosition / 3;
@@ -169,7 +171,7 @@ public class Node {
         //sb.append(String.format("G:%d Heuristic:%d F:%d\n",this.getG(),this.getH(),this.getF()));
         for(int i = 0; i < board.length; i++)
         {
-            if(i % 3 == 2) {
+            if(i % 3 == 2) { // it's the end of the row.
                 sb.append(board[i]);
                 sb.append('\n');
             }
